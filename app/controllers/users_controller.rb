@@ -23,7 +23,7 @@ class UsersController < ApplicationController
 			@picture.attachment = params[:avatar]
 			@picture.name = current_user["sched_id"]
 			@picture.user_id = User.all[0]
-		    if ( (is_image(params[:avatar].content_type) && (@picture.save) ) )
+		    if ( (Picture::is_image(params[:avatar].content_type) && (@picture.save) ) )
 				current_user['avatar'] = GlobalConstants::S3_YASEEN_URL + "photos/" + @picture.name + "/" + params[:avatar].original_filename 
 			end
 		end
