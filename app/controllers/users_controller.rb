@@ -5,7 +5,7 @@ class UsersController < ApplicationController
 	def edit_profile
 		@current_festival = {}
 		@current_festival[:url] =  params[:api_url].strip
-		@current_festival[:key] =  params[:api_key].strip
+		@current_festival[:api_key] =  params[:api_key].strip
 	    current_user = {}
 		current_user['username'] = params[:username].strip
 		current_user['password'] = params[:confirm_password]

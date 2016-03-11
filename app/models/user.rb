@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
 	require "uri"
 
 	def self.edit_user!(user, picture_model, festival)
-		if (user["avatar"] != "")
+		if !user["avatar"].nil? and user["avatar"] != ""
 			avatar = user["avatar"]
 			request = Net::HTTP::Get.new(UrlModule.url_encode("/api/user/mod?api_key=#{festival[:api_key]}&about=#{user["about"]}&url=#{user["url"]}&position=#{user["position"]}&company=#{user["company"]}&full_name=#{user["name"]}&email=#{user["email"]}&location=#{user["location"]}&uid=#{user["sched_id"]}&privacy=#{user["privacy_mode"]}&avatar=#{avatar}"))
 			Thread.new do
@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
 		return response.body 
 
 	end
-	
+
 	#return Avatar
 	def self.get_avatar(username, festival)
 		request = Net::HTTP::Get.new(UrlModule.url_encode("/api/user/get?api_key=#{festival[:api_key]}&by=username&term=#{username}&format=json&fields=avatar"))
