@@ -2,9 +2,9 @@ class UsersController < ApplicationController
 	def index
 	end
 	def edit_profile
-		@current_festival = {}
-		@current_festival[:url] =  params[:api_url].strip
-		@current_festival[:api_key] =  params[:api_key].strip
+		current_festival = {}
+		current_festival[:url] =  params[:api_url].strip
+		current_festival[:api_key] =  params[:api_key].strip
 	    current_user = {}
 		current_user['username'] = params[:username].strip
 		current_user['password'] = params[:confirm_password]
@@ -17,6 +17,7 @@ class UsersController < ApplicationController
 		current_user['sched_id']  = params[:sched_id].strip 
 		current_user['privacy_mode'] = "0"
 		current_user['privacy_mode'] = "1" if params[:privacy_mode] == "true"
+
 		@picture = Picture.new
 		if (!params[:avatar].nil?)
 			@picture.attachment = params[:avatar]
@@ -28,22 +29,19 @@ class UsersController < ApplicationController
 		end
 
 		if (current_user["email"] =~ /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i).nil?
-			render json: {error: "Invalid email address.", status:"error"}
-			return
+			render json: {error: "Invalid email address.", status:"error"} and return
 		end
 
-		basic_result = User.edit_user!(current_user, @picture, @current_festival )
+		basic_result = User.edit_user!(current_user, @picture, current_festival )
 
 		if  (basic_result.include?("ERR") && !basic_result.include?("ERR: Can't change user's password."))
-			render json: {error: basic_result.gsub("ERR: ", ""), status:"error"}
-			return
+			render json: {error: basic_result.gsub("ERR: ", ""), status:"error"} and return
 		end
 
 		if (!@picture.id.nil?)
-			avatar = User.get_avatar(current_user['username'], @current_festival)["avatar"]
+			avatar = User.get_avatar(current_user['username'], current_festival)["avatar"]
 			current_user['avatar'] = avatar
 		end
-		render json: { user: current_user, status:"success"}
-		return
+		render json: { user: current_user, status:"success"} and return
 	end
 end
