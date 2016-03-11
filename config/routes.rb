@@ -54,4 +54,6 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
   root 'users#index'
+  post   "/:festival/user/edit_profile", to: "users#edit_profile", as: "edit_profile_api"
+
 end
