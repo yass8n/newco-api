@@ -26,6 +26,7 @@ gem 'aws-sdk', '< 2'
 gem 'carrierwave'
 gem 'rmagick'
 gem 'fog'
+gem 'rails_12factor', group: :production
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
