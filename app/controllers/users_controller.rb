@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-	skip_before_filter :verify_authenticity_token, :only => [:ipn_notification]
 	def index
 	end
 	def edit_profile
@@ -35,7 +34,6 @@ class UsersController < ApplicationController
 
 		basic_result = User.edit_user!(current_user, @picture, @current_festival )
 
-		# This is fucked up... Idk what's going on here... NewCo returns can't change pwd even though we are not trying to...
 		if  (basic_result.include?("ERR") && !basic_result.include?("ERR: Can't change user's password."))
 			render json: {error: basic_result.gsub("ERR: ", ""), status:"error"}
 			return
@@ -45,7 +43,7 @@ class UsersController < ApplicationController
 			avatar = User.get_avatar(current_user['username'], @current_festival)["avatar"]
 			current_user['avatar'] = avatar
 		end
-		render json: { status:"success", user: current_user}
+		render json: { user: current_user, status:"success"}
 		return
 	end
 end
